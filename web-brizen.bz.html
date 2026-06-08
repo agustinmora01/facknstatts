@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brizen — Estampados que marcan la diferencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+  :root {
+    --black: #080808;
+    --dark: #111111;
+    --surface: #1a1a1a;
+    --border: #2a2a2a;
+    --accent: #FF5500;
+    --accent-light: #FF7733;
+    --accent-glow: rgba(255, 85, 0, 0.3);
+    --white: #ffffff;
+    --gray: #aaaaaa;
+    --light-gray: #666666;
+    --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s, backdrop-filter 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--white) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 600 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--accent-light) !important; }
+
+  /* ═══════════════════════════════════════
+     SHADER HERO — nuevo hero principal
+  ═══════════════════════════════════════ */
+  #hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #shader-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: block;
+  }
+  .shader-content {
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(39, 39, 42, 0.7);
+    padding: 8px;
+    width: calc(100% - 2rem);
+    max-width: 768px;
+    margin: 0 auto;
+  }
+  .shader-main {
+    position: relative;
+    border: 1px solid rgba(39, 39, 42, 0.7);
+    padding: 3rem 2rem;
+    overflow: hidden;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2px);
+  }
+  .shader-title {
+    margin-bottom: 0.75rem;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 7rem);
+    font-weight: 900;
+    letter-spacing: 3px;
+    line-height: 0.95;
+    text-shadow: 0 0 60px rgba(0,0,0,0.8);
+  }
+  .shader-sub {
+    color: rgba(255, 255, 255, 0.6);
+    padding: 0 1.5rem;
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    line-height: 1.6;
+  }
+  .shader-status {
+    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .ping-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px; height: 12px;
+  }
+  .ping-ring {
+    position: absolute;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: #22c55e;
+    opacity: 0.75;
+    animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .ping-dot {
+    position: relative;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+  .shader-status-text {
+    font-size: 0.78rem;
+    color: #22c55e;
+    font-weight: 500;
+  }
+
+  /* Liquid Glass Button */
+  .liquid-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    padding: 0 2.2rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    transition: transform 0.3s ease;
+    letter-spacing: 0.3px;
+    overflow: visible;
+  }
+  .liquid-btn:hover { transform: scale(1.05); }
+
+  .liquid-btn-shadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    pointer-events: none;
+    box-shadow:
+      0 0 6px rgba(0,0,0,0.03),
+      0 2px 6px rgba(0,0,0,0.08),
+      inset 3px 3px 0.5px -3px rgba(255,255,255,0.09),
+      inset -3px -3px 0.5px -3px rgba(255,255,255,0.85),
+      inset 1px 1px 1px -0.5px rgba(255,255,255,0.6),
+      inset -1px -1px 1px -0.5px rgba(255,255,255,0.6),
+      inset 0 0 6px 6px rgba(255,255,255,0.12),
+      inset 0 0 2px 2px rgba(255,255,255,0.06),
+      0 0 12px rgba(0,0,0,0.15);
+  }
+  .liquid-btn-blur {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border-radius: 9999px;
+    z-index: -1;
+    -webkit-backdrop-filter: url('#container-glass');
+    backdrop-filter: url('#container-glass');
+    overflow: hidden;
+  }
+  .liquid-btn-text {
+    position: relative;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .glass-filter-svg { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+  /* Scroll hint arrow */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0.5;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint span {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: white;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ═══════════════════════════════════════
+     IG PROFILE SECTION — hero original bajado
+  ═══════════════════════════════════════ */
+  #perfil {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .perfil-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,85,0,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,85,0,0.06) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .perfil-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    width: 100%;
+    align-items: center;
+  }
+
+  /* IG Card */
+  .ig-card {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .ig-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,85,0,0.05), transparent 60%);
+    pointer-events: none;
+  }
+  .ig-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .ig-avatar-ring {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    padding: 3px;
+    background: var(--ig-gradient);
+    flex-shrink: 0;
+    animation: ring-rotate 4s linear infinite;
+  }
+  @keyframes ring-rotate {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+  }
+  .ig-avatar-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--dark);
+    border: 3px solid var(--dark);
+  }
+  .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ig-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--white);
+  }
+  .ig-verified {
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #0095f6, #1877f2);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .ig-verified svg { width: 10px; height: 10px; }
+  .ig-handle { color: var(--gray); font-size: 0.85rem; margin-top: 2px; }
+  .ig-handle a { color: inherit; text-decoration: none; }
+  .ig-handle a:hover { color: var(--accent); }
+  .ig-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.2rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .ig-stat { text-align: center; flex: 1; }
+  .ig-stat-num { font-weight: 800; font-size: 1.2rem; color: var(--white); display: block; }
+  .ig-stat-label { font-size: 0.72rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .ig-bio { font-size: 0.88rem; color: var(--gray); line-height: 1.6; margin-bottom: 1.2rem; white-space: pre-line; }
+  .ig-actions { display: flex; gap: 0.6rem; margin-bottom: 1.5rem; }
+  .ig-btn {
+    flex: 1; padding: 0.55rem; border-radius: 8px;
+    font-size: 0.82rem; font-weight: 600; text-align: center;
+    cursor: pointer; text-decoration: none; border: none; transition: all 0.2s; display: block;
+  }
+  .ig-btn-primary { background: var(--accent); color: var(--white); }
+  .ig-btn-primary:hover { background: var(--accent-light); }
+  .ig-btn-secondary { background: var(--surface); color: var(--white); border: 1px solid var(--border); }
+  .ig-btn-secondary:hover { background: var(--border); }
+  .ig-mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; border-radius: 10px; overflow: hidden; }
+  .ig-mini-grid-item { aspect-ratio: 1; overflow: hidden; }
+  .ig-mini-grid-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+  .ig-mini-grid-item:hover img { transform: scale(1.08); }
+
+  /* Perfil right content */
+  .perfil-content { padding-right: 1rem; }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,85,0,0.15);
+    border: 1px solid rgba(255,85,0,0.3);
+    color: var(--accent-light);
+    padding: 0.4rem 1rem;
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-headline {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-headline .accent { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .btn {
+    padding: 0.85rem 2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary { background: var(--accent); color: var(--white); box-shadow: 0 0 30px var(--accent-glow); }
+  .btn-primary:hover { background: var(--accent-light); box-shadow: 0 0 40px rgba(255,85,0,0.5); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--white); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .pill { background: var(--surface); border: 1px solid var(--border); color: var(--gray); padding: 0.35rem 0.9rem; border-radius: 99px; font-size: 0.8rem; font-weight: 500; }
+
+  /* Section base */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-label::before { content: ''; width: 24px; height: 2px; background: var(--accent); }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; letter-spacing: 2px; margin-bottom: 1rem; color: var(--white); }
+  .section-sub { color: var(--gray); font-size: 1rem; line-height: 1.7; max-width: 500px; }
+  .section-header { margin-bottom: 4rem; }
+  .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 0 2rem; }
+
+  /* Productos */
+  #productos { background: transparent; }
+  .productos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .producto-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .producto-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--ig-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .producto-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+  .producto-card:hover::before { transform: scaleX(1); }
+  .producto-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .producto-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: var(--white); margin-bottom: 0.5rem; }
+  .producto-desc { color: var(--gray); font-size: 0.85rem; line-height: 1.6; }
+
+  /* Galería */
+  .galeria-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .galeria-item { aspect-ratio: 1; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; }
+  .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .galeria-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+  .galeria-item:hover img { transform: scale(1.08); }
+  .galeria-overlay { display: none; }
+
+  /* Reseñas */
+  #resenas { background: transparent; }
+  .resenas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .resena-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.3s; position: relative; }
+  .resena-card:hover { border-color: rgba(255,85,0,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.6); }
+  .resena-img { width: 100%; aspect-ratio: 9/16; object-fit: cover; display: block; }
+  .resena-tag { position: absolute; top: 12px; left: 12px; background: rgba(8,8,8,0.8); backdrop-filter: blur(8px); border: 1px solid rgba(255,85,0,0.4); color: var(--accent-light); padding: 0.25rem 0.7rem; border-radius: 99px; font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; }
+  .resena-body { padding: 1.2rem; border-top: 1px solid var(--border); }
+  .resena-stars { color: #FFB800; font-size: 0.9rem; margin-bottom: 0.5rem; letter-spacing: 2px; }
+  .resena-text { color: var(--gray); font-size: 0.85rem; line-height: 1.6; }
+
+  /* Contacto */
+  .contacto-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contacto-actions { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-btn { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.25s; border: 1px solid; }
+  .contact-btn-wa { background: rgba(37,211,102,0.1); border-color: rgba(37,211,102,0.3); color: #25D366; }
+  .contact-btn-wa:hover { background: rgba(37,211,102,0.2); border-color: #25D366; transform: translateX(4px); }
+  .contact-btn-ig { background: rgba(225,48,108,0.1); border-color: rgba(225,48,108,0.3); color: #E1306C; }
+  .contact-btn-ig:hover { background: rgba(225,48,108,0.2); border-color: #E1306C; transform: translateX(4px); }
+  .contact-btn-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .contact-btn-wa .contact-btn-icon { background: rgba(37,211,102,0.15); }
+  .contact-btn-ig .contact-btn-icon { background: rgba(225,48,108,0.15); }
+  .contact-btn-icon svg { width: 22px; height: 22px; }
+  .contact-info-block { padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .contact-info-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--light-gray); margin-bottom: 0.4rem; }
+  .contact-info-val { font-weight: 600; font-size: 0.95rem; color: var(--white); }
+
+  /* Footer */
+  footer { background: transparent; border-top: 1px solid var(--border); padding: 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px; color: var(--white); }
+  .footer-logo span { color: var(--accent); }
+  .footer-copy { color: var(--light-gray); font-size: 0.82rem; }
+  .footer-ig { color: var(--gray); font-size: 0.82rem; text-decoration: none; transition: color 0.2s; }
+  .footer-ig:hover { color: var(--accent); }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Aurora Background (global) ── */
+  @keyframes aurora-anim {
+    from { background-position: 50% 50%, 50% 50%; }
+    to   { background-position: 350% 50%, 350% 50%; }
+  }
+
+  #aurora-global {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .aurora-animated {
+    position: absolute;
+    inset: -10px;
+    opacity: 0.5;
+    will-change: background-position;
+    filter: blur(10px);
+    background-image:
+      repeating-linear-gradient(100deg, #000 0%, #000 7%, transparent 10%, transparent 12%, #000 16%),
+      repeating-linear-gradient(100deg, #3b82f6 10%, #a5b4fc 15%, #93c5fd 20%, #ddd6fe 25%, #60a5fa 30%);
+    background-size: 300%, 200%;
+    background-position: 50% 50%, 50% 50%;
+    animation: aurora-anim 60s linear infinite;
+    mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 100% 0%, black 10%, transparent 70%);
+  }
+
+  .aurora-animated::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(100deg, #000 0%, #000 7%, transparent 10%, transparent 12%, #000 16%),
+      repeating-linear-gradient(100deg, #3b82f6 10%, #a5b4fc 15%, #93c5fd 20%, #ddd6fe 25%, #60a5fa 30%);
+    background-size: 200%, 100%;
+    animation: aurora-anim 60s linear infinite;
+    mix-blend-mode: difference;
+  }
+
+  /* Todas las secciones y footer flotan sobre el aurora global */
+  section, footer { position: relative; z-index: 1; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .perfil-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .perfil-content { order: -1; padding-right: 0; }
+    .productos-grid { grid-template-columns: repeat(2, 1fr); }
+    .galeria-grid { grid-template-columns: repeat(3, 1fr); }
+    .galeria-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+    .resenas-grid { grid-template-columns: repeat(2, 1fr); }
+    .contacto-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    nav { padding: 0 1rem; }
+    .nav-links { display: none; }
+    .shader-main { padding: 2.5rem 1rem; }
+  }
+  @media (max-width: 600px) {
+    .productos-grid { grid-template-columns: repeat(2, 1fr); }
+    .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+    .resenas-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-btns { flex-direction: column; }
+    .btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">BRI<span>Z</span>EN</a>
+  <ul class="nav-links">
+    <li><a href="#perfil">Perfil</a></li>
+    <li><a href="#productos">Productos</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#resenas">Reseñas</a></li>
+    <li><a href="#contacto" class="nav-cta">Contactar</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════
+     SHADER HERO — hero nuevo (WebGL)
+══════════════════════════════════════ -->
+<section id="hero">
+  <canvas id="shader-canvas"></canvas>
+
+  <div class="shader-content">
+    <main class="shader-main">
+      <h1 class="shader-title">ESTAMPADOS<br>BRIZEN</h1>
+      <p class="shader-sub">Remeras, buzos, gorras y camperas con diseños únicos.<br>Tu marca, tu estilo — envíos a todo el país.</p>
+
+      <div class="shader-status">
+        <span class="ping-wrapper">
+          <span class="ping-ring"></span>
+          <span class="ping-dot"></span>
+        </span>
+        <p class="shader-status-text">Aceptando pedidos nuevos</p>
+      </div>
+
+      <div style="display:flex; justify-content:center;">
+        <a href="https://wa.me/541140715665?text=Hola!%20Vi%20tu%20web%20y%20quiero%20hacer%20un%20pedido" target="_blank" class="liquid-btn">
+          <div class="liquid-btn-shadow"></div>
+          <div class="liquid-btn-blur"></div>
+          <span class="liquid-btn-text">Pedir ahora</span>
+          <!-- Glass distortion filter -->
+          <svg class="glass-filter-svg" aria-hidden="true">
+            <defs>
+              <filter id="container-glass" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves="1" seed="1" result="turbulence"/>
+                <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise"/>
+                <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="70" xChannelSelector="R" yChannelSelector="B" result="displaced"/>
+                <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur"/>
+                <feComposite in="finalBlur" in2="finalBlur" operator="over"/>
+              </filter>
+            </defs>
+          </svg>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <div class="scroll-hint">
+    <span>scroll</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════
+     PERFIL IG — hero original (bajado)
+══════════════════════════════════════ -->
+<section id="perfil">
+  <div class="perfil-bg"></div>
+  <div class="perfil-inner">
+
+    <!-- Instagram Card -->
+    <div class="ig-card reveal">
+      <div class="ig-card-header">
+        <div class="ig-avatar-ring">
+          <div class="ig-avatar-inner">
+            <img src="assets/instagram/profile.jpg" alt="Brizen" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23222%22 width=%22100%22 height=%22100%22/><text y=%22.9em%22 font-size=%2260%22 x=%2220%22>👕</text></svg>'">
+          </div>
+        </div>
+        <div>
+          <div class="ig-name">
+            Brizen
+            <span class="ig-verified">
+              <svg viewBox="0 0 12 12" fill="none"><path d="M5.5 9L2 5.5l1-1L5.5 7 9 3.5l1 1L5.5 9z" fill="white"/></svg>
+            </span>
+          </div>
+          <div class="ig-handle"><a href="https://www.instagram.com/brizen.bz/" target="_blank">@brizen.bz</a></div>
+        </div>
+      </div>
+
+      <div class="ig-stats">
+        <div class="ig-stat">
+          <span class="ig-stat-num">27</span>
+          <span class="ig-stat-label">Publicaciones</span>
+        </div>
+        <div class="ig-stat">
+          <span class="ig-stat-num">40</span>
+          <span class="ig-stat-label">Seguidores</span>
+        </div>
+        <div class="ig-stat">
+          <span class="ig-stat-num">🌍 AR</span>
+          <span class="ig-stat-label">Envíos</span>
+        </div>
+      </div>
+
+      <div class="ig-bio">Estampados de remeras, buzos, gorras y camperas.
+Envíos a todo el país.
+1140715665</div>
+
+      <div class="ig-actions">
+        <a href="https://wa.me/541140715665" target="_blank" class="ig-btn ig-btn-primary">Pedir ahora</a>
+        <a href="https://www.instagram.com/brizen.bz/" target="_blank" class="ig-btn ig-btn-secondary">Ver perfil IG</a>
+      </div>
+
+      <div class="ig-mini-grid">
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-4.jpg" alt="Post Brizen" loading="lazy"></div>
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-5.jpg" alt="Post Brizen" loading="lazy"></div>
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-6.jpg" alt="Post Brizen" loading="lazy"></div>
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-7.jpg" alt="Post Brizen" loading="lazy"></div>
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-8.jpg" alt="Post Brizen" loading="lazy"></div>
+        <div class="ig-mini-grid-item"><img src="assets/instagram/post-9.jpg" alt="Post Brizen" loading="lazy"></div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="perfil-content">
+      <div class="hero-tag reveal">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="6"/></svg>
+        Estampados personalizados
+      </div>
+      <h2 class="hero-headline reveal reveal-delay-1">
+        TU ESTILO,<br>
+        <span class="accent">TU MARCA,</span><br>
+        TU ROPA
+      </h2>
+      <p class="hero-sub reveal reveal-delay-2">
+        Remeras, buzos, gorras y camperas con estampados únicos. Diseños que hablan por vos — con envíos a todo el país.
+      </p>
+      <div class="hero-btns reveal reveal-delay-3">
+        <a href="https://wa.me/541140715665?text=Hola!%20Vi%20tu%20Instagram%20y%20quiero%20pedir%20un%20presupuesto" target="_blank" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pedir presupuesto
+        </a>
+        <a href="#galeria" class="btn btn-outline">Ver galería</a>
+      </div>
+      <div class="hero-pills reveal reveal-delay-4">
+        <span class="pill">Remeras</span>
+        <span class="pill">Camperas</span>
+        <span class="pill">Gorras</span>
+        <span class="pill">Buzos</span>
+        <span class="pill">Envíos nacionales</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── PRODUCTOS ── -->
+<section id="productos">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal">Lo que hacemos</div>
+      <h2 class="section-title reveal reveal-delay-1">NUESTROS<br>PRODUCTOS</h2>
+      <p class="section-sub reveal reveal-delay-2">Estampamos cada prenda con el mismo compromiso: calidad real, diseños que duran, entrega en todo el país.</p>
+    </div>
+    <div class="productos-grid">
+      <div class="producto-card reveal">
+        <div class="producto-name">Remeras</div>
+        <p class="producto-desc">Estampados personalizados en remeras de todos los estilos. Perfectas para equipos, marcas o uso personal.</p>
+      </div>
+      <div class="producto-card reveal reveal-delay-1">
+        <div class="producto-name">Camperas</div>
+        <p class="producto-desc">Camperas con estampado de alta calidad. Tu diseño en una prenda que va con todo.</p>
+      </div>
+      <div class="producto-card reveal reveal-delay-2">
+        <div class="producto-name">Gorras</div>
+        <p class="producto-desc">Gorras con bordado o estampado. El complemento perfecto para tu look o tu marca.</p>
+      </div>
+      <div class="producto-card reveal reveal-delay-3">
+        <div class="producto-name">Buzos</div>
+        <p class="producto-desc">Buzos cómodos y con estilo. Ideales para indumentaria de equipos o colecciones propias.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── GALERÍA ── -->
+<section id="galeria">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal">Instagram @brizen.bz</div>
+      <h2 class="section-title reveal reveal-delay-1">GALERÍA</h2>
+      <p class="section-sub reveal reveal-delay-2">Algunos de nuestros trabajos más recientes. Seguinos en Instagram para ver todo lo nuevo.</p>
+    </div>
+    <div class="galeria-grid">
+      <div class="galeria-item reveal">
+        <img src="assets/instagram/post-4.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-1">
+        <img src="assets/instagram/post-5.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-2">
+        <img src="assets/instagram/post-6.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal">
+        <img src="assets/instagram/post-7.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-1">
+        <img src="assets/instagram/post-8.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-2">
+        <img src="assets/instagram/post-9.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal">
+        <img src="assets/instagram/post-10.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-1">
+        <img src="assets/instagram/post-11.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+      <div class="galeria-item reveal reveal-delay-2">
+        <img src="assets/instagram/post-12.jpg" alt="Brizen estampado" loading="lazy">
+        <div class="galeria-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="https://www.instagram.com/brizen.bz/" target="_blank" class="btn btn-outline" style="display:inline-flex;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Ver más en Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── RESEÑAS ── -->
+<section id="resenas">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal">Destacadas</div>
+      <h2 class="section-title reveal reveal-delay-1">LO QUE DICEN<br>NUESTROS CLIENTES</h2>
+      <p class="section-sub reveal reveal-delay-2">Reseñas reales de nuestros clientes. Cada prenda sale con el mismo cuidado y dedicación.</p>
+    </div>
+    <div class="resenas-grid">
+      <div class="resena-card reveal">
+        <div class="resena-tag">Remera Luana</div>
+        <img src="assets/resenas/resena-1.jpg" alt="Reseña Brizen - Remera Luana" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">Pero le re gustó y está super linda... que buenooo</p>
+        </div>
+      </div>
+      <div class="resena-card reveal reveal-delay-1">
+        <div class="resena-tag">Entrega en mano</div>
+        <img src="assets/resenas/resena-2.jpg" alt="Reseña Brizen - Entrega" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">Rápida la entrega y todo perfecto. Un placer trabajar con Brizen.</p>
+        </div>
+      </div>
+      <div class="resena-card reveal reveal-delay-2">
+        <div class="resena-tag">Remera Oktuere</div>
+        <img src="assets/resenas/resena-3.jpg" alt="Reseña Brizen - Remera Oktuere" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">Hola Facu. Muy copada la remera. La calidad y la atención. Son unos genios.</p>
+        </div>
+      </div>
+      <div class="resena-card reveal">
+        <div class="resena-tag">Diseño personalizado</div>
+        <img src="assets/resenas/resena-4.jpg" alt="Reseña Brizen - Diseño personalizado" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">EL DISEÑO ME ENCANTÓ. EL TALLE RE BIEN Y LA TELA TMB. Recibí las remeras y son una bomba.</p>
+        </div>
+      </div>
+      <div class="resena-card reveal reveal-delay-1">
+        <div class="resena-tag">Bad Bunny World Tour</div>
+        <img src="assets/resenas/resena-5.jpg" alt="Reseña Brizen - Bad Bunny" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">Facu muy buenas las remeras. La verdad muy bien hechas y de muy buena calidad. Las recomiendo.</p>
+        </div>
+      </div>
+      <div class="resena-card reveal reveal-delay-2">
+        <div class="resena-tag">Pedido grupal</div>
+        <img src="assets/resenas/resena-6.jpg" alt="Reseña Brizen - Pedido grupal" class="resena-img" loading="lazy">
+        <div class="resena-body">
+          <div class="resena-stars">★★★★★</div>
+          <p class="resena-text">Hola facuu... geniales las remeras, una bomba. Muy buenas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── CONTACTO ── -->
+<section id="contacto">
+  <div class="container">
+    <div class="contacto-inner">
+      <div>
+        <div class="section-label reveal">Contacto</div>
+        <h2 class="section-title reveal reveal-delay-1">¿QUERÉS PEDIR<br>TU DISEÑO?</h2>
+        <p class="section-sub reveal reveal-delay-2">Mandanos un mensaje con tu idea y te damos el presupuesto. Atendemos por WhatsApp o Instagram. Hacemos envíos a todo el país.</p>
+        <div style="margin-top:2rem; display:flex; flex-direction:column; gap:0.8rem;" class="reveal reveal-delay-3">
+          <div class="contact-info-block">
+            <div class="contact-info-title">Teléfono / WhatsApp</div>
+            <div class="contact-info-val">11 4071-5665</div>
+          </div>
+          <div class="contact-info-block">
+            <div class="contact-info-title">Instagram</div>
+            <div class="contact-info-val">@brizen.bz</div>
+          </div>
+          <div class="contact-info-block">
+            <div class="contact-info-title">Envíos</div>
+            <div class="contact-info-val">Todo el país</div>
+          </div>
+        </div>
+      </div>
+      <div class="contacto-actions reveal reveal-delay-2">
+        <a href="https://wa.me/541140715665?text=Hola!%20Vi%20tu%20web%20y%20quiero%20pedir%20un%20presupuesto%20para%20estampados" target="_blank" class="contact-btn contact-btn-wa">
+          <div class="contact-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;opacity:0.7;margin-bottom:2px;">Escribinos directo</div>
+            WhatsApp — 11 4071-5665
+          </div>
+        </a>
+        <a href="https://www.instagram.com/brizen.bz/" target="_blank" class="contact-btn contact-btn-ig">
+          <div class="contact-btn-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;opacity:0.7;margin-bottom:2px;">Seguinos y escribinos</div>
+            Instagram — @brizen.bz
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">BRI<span>Z</span>EN</div>
+  <span class="footer-copy">© 2026 Brizen — Estampados que marcan la diferencia</span>
+  <a href="https://www.instagram.com/brizen.bz/" target="_blank" class="footer-ig">@brizen.bz</a>
+</footer>
+
+<script>
+// ── Nav scroll ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── WebGL Shader Hero ──
+(function() {
+  const canvas = document.getElementById('shader-canvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  const vertexShader = `
+    attribute vec3 position;
+    void main() {
+      gl_Position = vec4(position, 1.0);
+    }
+  `;
+
+  const fragmentShader = `
+    precision highp float;
+    uniform vec2 resolution;
+    uniform float time;
+    uniform float xScale;
+    uniform float yScale;
+    uniform float distortion;
+
+    void main() {
+      vec2 p = (gl_FragCoord.xy * 2.0 - resolution) / min(resolution.x, resolution.y);
+      float d = length(p) * distortion;
+      float rx = p.x * (1.0 + d);
+      float gx = p.x;
+      float bx = p.x * (1.0 - d);
+      float r = 0.05 / abs(p.y + sin((rx + time) * xScale) * yScale);
+      float g = 0.05 / abs(p.y + sin((gx + time) * xScale) * yScale);
+      float b = 0.05 / abs(p.y + sin((bx + time) * xScale) * yScale);
+      gl_FragColor = vec4(r, g, b, 1.0);
+    }
+  `;
+
+  const scene    = new THREE.Scene();
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(new THREE.Color(0x000000));
+
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, -1);
+
+  const uniforms = {
+    resolution: { value: [window.innerWidth, window.innerHeight] },
+    time:       { value: 0.0 },
+    xScale:     { value: 1.0 },
+    yScale:     { value: 0.5 },
+    distortion: { value: 0.05 },
+  };
+
+  const positions = new Float32Array([
+    -1, -1, 0,   1, -1, 0,  -1,  1, 0,
+     1, -1, 0,  -1,  1, 0,   1,  1, 0,
+  ]);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+  const material = new THREE.RawShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms,
+    side: THREE.DoubleSide,
+  });
+
+  scene.add(new THREE.Mesh(geometry, material));
+
+  function resize() {
+    const w = window.innerWidth;
+    const h = document.getElementById('hero').offsetHeight;
+    renderer.setSize(w, h, false);
+    uniforms.resolution.value = [w, h];
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let id;
+  function animate() {
+    uniforms.time.value += 0.01;
+    renderer.render(scene, camera);
+    id = requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Pause when out of viewport
+  const heroEl = document.getElementById('hero');
+  const visObs = new IntersectionObserver(entries => {
+    entries[0].isIntersecting ? animate() : cancelAnimationFrame(id);
+  }, { threshold: 0 });
+  visObs.observe(heroEl);
+})();
+
+// ── Aurora Background (global, un único elemento fijo) ──
+(function() {
+  const overlay = document.createElement('div');
+  overlay.id = 'aurora-global';
+  const animated = document.createElement('div');
+  animated.className = 'aurora-animated';
+  overlay.appendChild(animated);
+  document.body.prepend(overlay);
+})();
+
+// ── Scroll Reveal ──
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
