@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "web-brizen.bz.html", "use": "@vercel/static" },
+    { "src": "assets/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/web-brizen.bz.html" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
