@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FCKN Tattoo — Morón, Buenos Aires</title>
+<meta name="description" content="Tatuador en Morón, Buenos Aires. Black & gray, japonés, occult. Consultá por MD.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#080808;font-family:'Kanit',sans-serif;overflow-x:hidden}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:#080808}
+::-webkit-scrollbar-thumb{background:#c7402a;border-radius:2px}
+
+.main-wrapper{overflow-x:clip;background:#080808}
+
+/* ── GRADIENT HEADING ── */
+.hero-heading{
+  background:linear-gradient(180deg,#5a5d63 0%,#C8D8E2 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ── FADE IN ── */
+.fade-in{opacity:0;transition:opacity .7s cubic-bezier(.25,.1,.25,1),transform .7s cubic-bezier(.25,.1,.25,1)}
+.fade-in.visible{opacity:1;transform:translate(0,0) !important}
+
+/* ── CONTACT BUTTON ── */
+.contact-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(123deg,#1a0000 7%,#8B0000 37%,#c7402a 72%,#2a0000 100%);
+  box-shadow:0px 4px 4px rgba(199,64,42,.3),inset 4px 4px 12px rgba(139,0,0,.6);
+  outline:2px solid rgba(215,226,234,.7);outline-offset:-3px;
+  border-radius:9999px;border:none;cursor:pointer;
+  color:#D7E2EA;font-family:'Kanit',sans-serif;font-weight:500;
+  text-transform:uppercase;letter-spacing:.15em;
+  padding:12px 32px;font-size:.75rem;
+  transition:opacity .2s;
+}
+.contact-btn:hover{opacity:.85}
+@media(min-width:640px){.contact-btn{padding:14px 40px;font-size:.875rem}}
+@media(min-width:768px){.contact-btn{padding:16px 48px;font-size:1rem}}
+
+/* ── LIVE BUTTON ── */
+.live-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:9999px;border:2px solid #D7E2EA;
+  color:#D7E2EA;font-family:'Kanit',sans-serif;font-weight:500;
+  text-transform:uppercase;letter-spacing:.15em;
+  padding:12px 32px;font-size:.875rem;
+  background:transparent;cursor:pointer;
+  transition:background .2s;
+}
+.live-btn:hover{background:rgba(215,226,234,.1)}
+@media(min-width:640px){.live-btn{padding:14px 40px;font-size:1rem}}
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+#hero{
+  height:100vh;display:flex;flex-direction:column;
+  overflow-x:clip;position:relative;
+  padding:0 24px;background:#080808;
+}
+@media(min-width:768px){#hero{padding:0 40px}}
+
+.hero-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:24px;
+}
+@media(min-width:768px){.hero-nav{padding-top:32px}}
+
+.hero-nav a{
+  color:#D7E2EA;font-weight:500;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.875rem;
+  transition:opacity .2s;
+}
+.hero-nav a:hover{opacity:.7}
+@media(min-width:768px){.hero-nav a{font-size:1.125rem}}
+@media(min-width:1024px){.hero-nav a{font-size:1.4rem}}
+
+.hero-heading-wrap{overflow:hidden;margin-top:24px}
+@media(min-width:640px){.hero-heading-wrap{margin-top:16px}}
+@media(min-width:768px){.hero-heading-wrap{margin-top:-20px}}
+
+.hero-h1{
+  font-weight:900;text-transform:lowercase;
+  letter-spacing:-.02em;line-height:1;
+  white-space:nowrap;width:100%;
+  font-size:13.5vw;
+}
+@media(min-width:640px){.hero-h1{font-size:14.5vw}}
+@media(min-width:768px){.hero-h1{font-size:15.5vw}}
+@media(min-width:1024px){.hero-h1{font-size:17vw}}
+
+.hero-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  padding-bottom:28px;margin-top:auto;
+}
+@media(min-width:640px){.hero-bottom{padding-bottom:32px}}
+@media(min-width:768px){.hero-bottom{padding-bottom:40px}}
+
+.hero-desc{
+  color:#D7E2EA;font-weight:300;text-transform:uppercase;
+  letter-spacing:.08em;line-height:1.35;
+  font-size:clamp(.7rem,1.3vw,1.35rem);
+  max-width:150px;
+}
+@media(min-width:640px){.hero-desc{max-width:200px}}
+@media(min-width:768px){.hero-desc{max-width:250px}}
+
+/* ── Portrait ── */
+.hero-portrait{
+  position:absolute;left:50%;z-index:10;
+  top:50%;transform:translate(-50%,-50%);
+  width:260px;will-change:transform;
+}
+@media(min-width:640px){
+  .hero-portrait{top:auto;bottom:0;transform:translateX(-50%);width:340px}
+}
+@media(min-width:768px){.hero-portrait{width:420px}}
+@media(min-width:1024px){.hero-portrait{width:500px}}
+
+.hero-portrait img{
+  width:100%;border-radius:20px;
+  object-fit:cover;
+  box-shadow:0 0 60px rgba(0,0,0,.8),0 0 120px rgba(0,0,0,.5);
+}
+
+/* ══════════════════════════════
+   MARQUEE
+══════════════════════════════ */
+#marquee{
+  background:#080808;
+  padding-top:96px;padding-bottom:40px;
+  overflow:hidden;
+}
+@media(min-width:640px){#marquee{padding-top:120px}}
+@media(min-width:768px){#marquee{padding-top:160px}}
+
+.marquee-row{display:flex;gap:12px;margin-bottom:12px;will-change:transform}
+.marquee-img{
+  width:400px;height:260px;flex-shrink:0;
+  border-radius:16px;object-fit:cover;
+  filter:grayscale(20%);
+  transition:filter .3s;
+}
+.marquee-img:hover{filter:grayscale(0%)}
+
+/* ══════════════════════════════
+   ABOUT
+══════════════════════════════ */
+#about{
+  min-height:100vh;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:80px 20px;background:#080808;
+}
+@media(min-width:640px){#about{padding:80px 32px}}
+@media(min-width:768px){#about{padding:80px 40px}}
+
+.about-deco{position:absolute;pointer-events:none}
+.about-deco img{width:100%;border-radius:12px;object-fit:cover}
+
+.about-deco-tl{top:4%;left:1%;width:110px}
+.about-deco-bl{bottom:8%;left:3%;width:95px}
+.about-deco-tr{top:4%;right:1%;width:110px}
+.about-deco-br{bottom:8%;right:3%;width:120px}
+@media(min-width:640px){
+  .about-deco-tl{left:2%;width:150px}
+  .about-deco-bl{left:6%;width:130px}
+  .about-deco-tr{right:2%;width:150px}
+  .about-deco-br{right:6%;width:160px}
+}
+@media(min-width:768px){
+  .about-deco-tl{left:4%;width:190px}
+  .about-deco-bl{left:10%;width:165px}
+  .about-deco-tr{right:4%;width:190px}
+  .about-deco-br{right:10%;width:200px}
+}
+
+.about-heading{
+  font-weight:900;text-transform:uppercase;
+  letter-spacing:-.02em;line-height:1;
+  text-align:center;
+  font-size:clamp(3rem,12vw,150px);
+}
+
+.char{opacity:.2;transition:opacity .08s}
+.char.lit{opacity:1}
+.char-wrap{
+  color:#D7E2EA;font-weight:400;text-align:center;
+  line-height:1.75;max-width:540px;
+  font-size:clamp(.95rem,1.9vw,1.3rem);
+}
+
+/* ══════════════════════════════
+   ESTILOS (Services)
+══════════════════════════════ */
+#estilos{
+  background:#F0EDED;
+  border-radius:40px 40px 0 0;
+  padding:80px 20px;
+}
+@media(min-width:640px){#estilos{border-radius:50px 50px 0 0;padding:96px 32px}}
+@media(min-width:768px){#estilos{border-radius:60px 60px 0 0;padding:128px 40px}}
+
+.estilos-heading{
+  font-weight:900;text-transform:uppercase;
+  text-align:center;color:#0C0C0C;
+  font-size:clamp(3rem,12vw,150px);
+  letter-spacing:-.02em;line-height:1;
+  margin-bottom:64px;
+}
+@media(min-width:640px){.estilos-heading{margin-bottom:80px}}
+@media(min-width:768px){.estilos-heading{margin-bottom:112px}}
+
+.estilos-list{max-width:64rem;margin:0 auto}
+.estilo-item{
+  display:flex;align-items:flex-start;gap:20px;
+  padding:32px 0;
+  border-bottom:1px solid rgba(12,12,12,.15);
+}
+.estilo-item:first-child{border-top:1px solid rgba(12,12,12,.15)}
+@media(min-width:640px){.estilo-item{padding:40px 0;gap:28px}}
+@media(min-width:768px){.estilo-item{padding:48px 0;gap:32px}}
+
+.estilo-num{
+  font-weight:900;color:#0C0C0C;flex-shrink:0;
+  font-size:clamp(3rem,10vw,130px);line-height:1;
+}
+.estilo-content{padding-top:.2em}
+.estilo-name{
+  font-weight:600;text-transform:uppercase;color:#0C0C0C;
+  font-size:clamp(1rem,2.2vw,2rem);
+  margin-bottom:6px;
+}
+.estilo-desc{
+  font-weight:300;line-height:1.65;color:#0C0C0C;
+  opacity:.6;max-width:42rem;
+  font-size:clamp(.82rem,1.5vw,1.2rem);
+}
+
+/* ══════════════════════════════
+   TRABAJOS (Projects)
+══════════════════════════════ */
+#trabajos{
+  background:#080808;
+  border-radius:40px 40px 0 0;
+  margin-top:-40px;
+  position:relative;z-index:10;
+  padding:80px 20px 24px;
+}
+@media(min-width:640px){#trabajos{border-radius:50px 50px 0 0;margin-top:-48px;padding:96px 32px 24px}}
+@media(min-width:768px){#trabajos{border-radius:60px 60px 0 0;margin-top:-56px;padding:128px 40px 32px}}
+
+.trabajos-heading{
+  font-weight:900;text-transform:uppercase;
+  text-align:center;
+  font-size:clamp(3rem,12vw,150px);
+  letter-spacing:-.02em;line-height:1;
+  margin-bottom:64px;
+}
+@media(min-width:640px){.trabajos-heading{margin-bottom:80px}}
+
+.card-sticky-wrap{height:85vh;position:relative}
+.project-card{
+  position:sticky;
+  top:96px;
+  border-radius:40px;
+  border:2px solid rgba(215,226,234,.25);
+  background:#0f0f0f;
+  padding:16px;
+  will-change:transform;
+  transform-origin:top center;
+}
+@media(min-width:640px){.project-card{border-radius:50px;padding:24px;top:104px}}
+@media(min-width:768px){.project-card{border-radius:60px;padding:32px;top:128px}}
+
+.card-top{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+  margin-bottom:16px;
+}
+.card-num{
+  font-weight:900;color:#D7E2EA;
+  font-size:clamp(2.5rem,8vw,100px);line-height:1;
+}
+.card-meta{flex:1;padding:0 12px}
+.card-category{
+  color:#c7402a;opacity:.9;font-weight:400;
+  text-transform:uppercase;letter-spacing:.12em;
+  font-size:clamp(.65rem,1.1vw,.85rem);
+}
+.card-name{
+  color:#D7E2EA;font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;
+  font-size:clamp(.95rem,2.2vw,1.8rem);
+}
+.card-images{display:flex;gap:12px}
+.card-col1{display:flex;flex-direction:column;gap:12px;width:40%}
+.card-col2{width:60%}
+.card-img-wrap{
+  overflow:hidden;border-radius:24px;position:relative;flex-shrink:0;
+}
+@media(min-width:640px){.card-img-wrap{border-radius:32px}}
+@media(min-width:768px){.card-img-wrap{border-radius:44px}}
+
+.card-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+.card-img-sm{height:clamp(85px,11vw,165px)}
+.card-img-md{height:clamp(105px,15vw,235px)}
+.card-img-lg{height:calc(clamp(85px,11vw,165px) + clamp(105px,15vw,235px) + 12px)}
+
+/* ══════════════════════════════
+   FOOTER
+══════════════════════════════ */
+#footer{
+  background:#080808;
+  padding:80px 24px 60px;
+  text-align:center;
+  border-top:1px solid rgba(215,226,234,.06);
+}
+.footer-logo{
+  font-weight:900;letter-spacing:.05em;
+  font-size:clamp(2rem,8vw,80px);
+  color:#D7E2EA;opacity:.15;
+  margin-bottom:40px;
+  text-transform:uppercase;
+}
+.footer-links{
+  display:flex;justify-content:center;gap:32px;
+  margin-bottom:40px;
+  flex-wrap:wrap;
+}
+.footer-links a{
+  color:#D7E2EA;opacity:.5;
+  font-weight:400;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.8rem;
+  transition:opacity .2s;
+}
+.footer-links a:hover{opacity:1}
+.footer-copy{
+  color:#D7E2EA;opacity:.2;
+  font-weight:300;font-size:.75rem;
+  letter-spacing:.05em;
+}
+
+/* ══════════════════════════════
+   CONTACTO
+══════════════════════════════ */
+#contacto{
+  background:#080808;
+  padding:20px 24px 60px;
+  text-align:center;
+}
+@media(min-width:768px){#contacto{padding:24px 40px 72px}}
+
+.contacto-heading{
+  font-weight:900;text-transform:uppercase;
+  font-size:clamp(3rem,12vw,150px);
+  letter-spacing:-.02em;line-height:1;
+  margin-bottom:10px;
+}
+.contacto-sub{
+  color:#D7E2EA;opacity:.4;font-weight:300;
+  text-transform:uppercase;letter-spacing:.14em;
+  font-size:clamp(.75rem,1.4vw,1rem);
+  margin-bottom:32px;
+}
+@media(min-width:640px){.contacto-sub{margin-bottom:40px}}
+
+.contacto-links{
+  display:flex;flex-direction:column;gap:16px;
+  max-width:640px;margin:0 auto;
+}
+@media(min-width:640px){
+  .contacto-links{flex-direction:row;max-width:860px;gap:20px}
+}
+
+.contacto-link{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  padding:36px 24px;
+  border:1px solid rgba(215,226,234,.1);
+  border-radius:28px;background:#0f0f0f;
+  color:#D7E2EA;text-decoration:none;
+  transition:border-color .25s,background .25s,transform .2s;
+}
+.contacto-link:hover{
+  border-color:rgba(199,64,42,.5);
+  background:rgba(199,64,42,.06);
+  transform:translateY(-3px);
+}
+.contacto-link svg{
+  width:32px;height:32px;
+  opacity:.65;flex-shrink:0;
+}
+.contacto-link-platform{
+  opacity:.35;font-weight:400;
+  text-transform:uppercase;letter-spacing:.18em;
+  font-size:.7rem;
+}
+.contacto-link-handle{
+  font-weight:700;
+  font-size:clamp(1rem,2.2vw,1.5rem);
+  letter-spacing:.02em;
+}
+
+/* ── utility ── */
+.flex-col{display:flex;flex-direction:column}
+.flex-center{display:flex;align-items:center;justify-content:center}
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{
+  position:fixed;bottom:28px;right:24px;
+  width:58px;height:58px;border-radius:50%;
+  background:#25D366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,.45);
+  z-index:9999;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  text-decoration:none;
+}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(37,211,102,.6)}
+@keyframes wa-shake{
+  0%,100%{transform:scale(1) rotate(0deg)}
+  15%{transform:scale(1.18) rotate(-12deg)}
+  30%{transform:scale(1.15) rotate(10deg)}
+  45%{transform:scale(1.1) rotate(-6deg)}
+  60%{transform:scale(1.06) rotate(4deg)}
+  75%{transform:scale(1.03) rotate(-2deg)}
+}
+.wa-float.wa-anim{animation:wa-shake .55s ease both}
+</style>
+</head>
+<body>
+<div class="main-wrapper">
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="hero">
+  <nav class="hero-nav fade-in" data-delay="0" style="transform:translateY(-20px)">
+    <a href="#about">Sobre mí</a>
+    <a href="#estilos">Estilos</a>
+    <a href="#trabajos">Trabajos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <div class="hero-heading-wrap">
+    <h1 class="hero-h1 hero-heading fade-in" data-delay="150" style="transform:translateY(40px)">fackn.tatts</h1>
+  </div>
+
+  <!-- Portrait: artista dibujando, foto de noche -->
+  <div class="hero-portrait" id="hero-portrait">
+    <img src="assets/instagram/post-9.jpg" alt="Fackn Tatts — Morón">
+  </div>
+
+  <div class="hero-bottom">
+    <p class="hero-desc fade-in" data-delay="350" style="transform:translateY(20px)">
+      tatuador en morón, buenos aires. black &amp; gray · japonés · occult
+    </p>
+    <div class="fade-in" data-delay="500" style="transform:translateY(20px)">
+      <a href="https://ig.me/m/fackn.tatts" target="_blank" rel="noopener">
+        <button class="contact-btn">Consultas por MD</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     MARQUEE
+══════════════════════════════ -->
+<section id="marquee">
+  <div class="marquee-row" id="row1"></div>
+  <div class="marquee-row" id="row2"></div>
+</section>
+
+<!-- ══════════════════════════════
+     ABOUT
+══════════════════════════════ -->
+<section id="about">
+  <!-- Decorative corners: fotos de trabajos -->
+  <div class="about-deco about-deco-tl fade-in" data-delay="100" data-x="-80" style="transform:translateX(-80px)">
+    <img src="assets/instagram/post-1.jpg" alt="">
+  </div>
+  <div class="about-deco about-deco-bl fade-in" data-delay="250" data-x="-80" style="transform:translateX(-80px)">
+    <img src="assets/instagram/post-6.jpg" alt="">
+  </div>
+  <div class="about-deco about-deco-tr fade-in" data-delay="150" data-x="80" style="transform:translateX(80px)">
+    <img src="assets/instagram/post-4.jpg" alt="">
+  </div>
+  <div class="about-deco about-deco-br fade-in" data-delay="300" data-x="80" style="transform:translateX(80px)">
+    <img src="assets/instagram/post-2.jpg" alt="">
+  </div>
+
+  <div class="flex-col flex-center" style="gap:clamp(36px,5vw,52px);position:relative;z-index:1">
+    <h2 class="about-heading hero-heading fade-in" data-delay="0" style="transform:translateY(40px)">Sobre mí</h2>
+    <div class="flex-col flex-center" style="gap:clamp(56px,8vw,88px)">
+      <p class="char-wrap" id="about-text"
+         data-text="Con más de cuatro años tatuando en Morón, Buenos Aires, trabajo piezas en black & gray, estilo japonés y diseños occult. Cada pieza es única, pensada y ejecutada con precisión. Consultá por MD para tu próxima pieza."></p>
+      <a href="https://ig.me/m/fackn.tatts" target="_blank" rel="noopener">
+        <button class="contact-btn">Consultas por MD</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     ESTILOS
+══════════════════════════════ -->
+<section id="estilos">
+  <h2 class="estilos-heading fade-in" data-delay="0" style="transform:translateY(40px)">Estilos</h2>
+  <div class="estilos-list">
+    <div class="estilo-item fade-in" data-delay="0" style="transform:translateY(30px)">
+      <span class="estilo-num">01</span>
+      <div class="estilo-content">
+        <div class="estilo-name">Black &amp; Gray</div>
+        <div class="estilo-desc">Piezas ejecutadas con técnica black &amp; gray: gradientes, sombreados y detalles finos que generan profundidad y contraste duradero sobre la piel.</div>
+      </div>
+    </div>
+    <div class="estilo-item fade-in" data-delay="100" style="transform:translateY(30px)">
+      <span class="estilo-num">02</span>
+      <div class="estilo-content">
+        <div class="estilo-name">Japonés</div>
+        <div class="estilo-desc">Diseños con identidad japonesa: samurais, koi, dragones, flores de cerezo y nubes. Composiciones equilibradas con carácter y tradición.</div>
+      </div>
+    </div>
+    <div class="estilo-item fade-in" data-delay="200" style="transform:translateY(30px)">
+      <span class="estilo-num">03</span>
+      <div class="estilo-content">
+        <div class="estilo-name">Occult</div>
+        <div class="estilo-desc">Ilustraciones de temática oscura, simbología oculta, criaturas y elementos místicos. Estética cruda, directa y sin filtro.</div>
+      </div>
+    </div>
+    <div class="estilo-item fade-in" data-delay="300" style="transform:translateY(30px)">
+      <span class="estilo-num">04</span>
+      <div class="estilo-content">
+        <div class="estilo-name">Cover Up</div>
+        <div class="estilo-desc">Transformamos tatuajes viejos en piezas nuevas. Diseño personalizado según la zona y el tatuaje existente para lograr el mejor resultado posible.</div>
+      </div>
+    </div>
+    <div class="estilo-item fade-in" data-delay="400" style="transform:translateY(30px)">
+      <span class="estilo-num">05</span>
+      <div class="estilo-content">
+        <div class="estilo-name">Retoques</div>
+        <div class="estilo-desc">Retocamos trabajos ya cicatrizados para devolverles intensidad, nitidez y definición. Consultas según el trabajo y el tiempo desde la sesión.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     TRABAJOS
+══════════════════════════════ -->
+<section id="trabajos">
+  <h2 class="trabajos-heading hero-heading fade-in" data-delay="0" style="transform:translateY(40px)">Trabajos</h2>
+  <div id="cards-container"></div>
+</section>
+
+<!-- ══════════════════════════════
+     CONTACTO
+══════════════════════════════ -->
+<section id="contacto">
+  <h2 class="contacto-heading hero-heading fade-in" data-delay="0" style="transform:translateY(40px)">Contacto</h2>
+  <p class="contacto-sub fade-in" data-delay="100" style="transform:translateY(20px)">Para consultas, presupuestos y turnos</p>
+
+  <div class="contacto-links fade-in" data-delay="200" style="transform:translateY(30px)">
+
+    <!-- Instagram -->
+    <a href="https://ig.me/m/fackn.tatts" target="_blank" rel="noopener" class="contacto-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="contacto-link-platform">Instagram</span>
+      <span class="contacto-link-handle">@fackn.tatts</span>
+    </a>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/5491134627720" target="_blank" rel="noopener" class="contacto-link">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      <span class="contacto-link-platform">WhatsApp</span>
+      <span class="contacto-link-handle">+54 9 11 3462-7720</span>
+    </a>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer id="footer">
+  <div class="footer-logo">FCKN</div>
+  <div class="footer-links">
+    <a href="#about">Sobre mí</a>
+    <a href="#estilos">Estilos</a>
+    <a href="#trabajos">Trabajos</a>
+    <a href="https://www.instagram.com/fackn.tatts/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://ig.me/m/fackn.tatts" target="_blank" rel="noopener">Consultas</a>
+  </div>
+  <p class="footer-copy">© 2024 FCKN Tattoo — Morón, Buenos Aires</p>
+</footer>
+
+</div><!-- .main-wrapper -->
+
+<!-- ── WHATSAPP FLOAT ── -->
+<a href="https://wa.me/5491134627720" target="_blank" rel="noopener" class="wa-float" id="wa-float" aria-label="WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+// ═══════════════════════════════════
+// MARQUEE DATA — posts locales
+// ═══════════════════════════════════
+const ROW1 = [
+  'assets/instagram/post-1.jpg',
+  'assets/instagram/post-2.jpg',
+  'assets/instagram/post-3.jpg',
+  'assets/instagram/post-4.jpg',
+  'assets/instagram/post-5.jpg',
+  'assets/instagram/post-6.jpg',
+];
+const ROW2 = [
+  'assets/instagram/post-7.jpg',
+  'assets/instagram/post-8.jpg',
+  'assets/instagram/post-9.jpg',
+  'assets/instagram/post-10.jpg',
+  'assets/instagram/post-11.jpg',
+  'assets/instagram/post-12.jpg',
+];
+
+// ═══════════════════════════════════
+// PROJECTS DATA
+// ═══════════════════════════════════
+const PROJECTS = [
+  {
+    num:'01', category:'Black & Gray', name:'Samurai / Blackwork',
+    c1a:'assets/instagram/post-2.jpg',
+    c1b:'assets/instagram/post-5.jpg',
+    c2: 'assets/instagram/post-1.jpg',
+  },
+  {
+    num:'02', category:'Japonés', name:'Diseño Oriental',
+    c1a:'assets/instagram/post-8.jpg',
+    c1b:'assets/instagram/post-10.jpg',
+    c2: 'assets/instagram/post-4.jpg',
+  },
+  {
+    num:'03', category:'Ornamental', name:'Fine Line &amp; Ornamental',
+    c1a:'assets/instagram/extra-1.png',
+    c1b:'assets/instagram/extra-2.png',
+    c2: 'assets/instagram/extra-3.png',
+  },
+];
+
+// ═══════════════════════════════════
+// BUILD MARQUEE
+// ═══════════════════════════════════
+function buildRow(el, imgs) {
+  const all = [...imgs, ...imgs, ...imgs];
+  all.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.loading = 'lazy';
+    img.className = 'marquee-img';
+    el.appendChild(img);
+  });
+}
+buildRow(document.getElementById('row1'), ROW1);
+buildRow(document.getElementById('row2'), ROW2);
+
+// ═══════════════════════════════════
+// BUILD PROJECT CARDS
+// ═══════════════════════════════════
+const container = document.getElementById('cards-container');
+PROJECTS.forEach((p, i) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'card-sticky-wrap';
+  wrap.innerHTML = `
+    <div class="project-card" id="card-${i}" style="top:${96 + i * 28}px">
+      <div class="card-top">
+        <span class="card-num">${p.num}</span>
+        <div class="card-meta">
+          <div class="card-category">${p.category}</div>
+          <div class="card-name">${p.name}</div>
+        </div>
+        <a href="https://www.instagram.com/fackn.tatts/" target="_blank" rel="noopener">
+          <button class="live-btn">Ver en IG</button>
+        </a>
+      </div>
+      <div class="card-images">
+        <div class="card-col1">
+          <div class="card-img-wrap card-img-sm"><img src="${p.c1a}" alt="" class="card-img" loading="lazy"></div>
+          <div class="card-img-wrap card-img-md"><img src="${p.c1b}" alt="" class="card-img" loading="lazy"></div>
+        </div>
+        <div class="card-col2">
+          <div class="card-img-wrap card-img-lg" style="height:calc(clamp(85px,11vw,165px) + clamp(105px,15vw,235px) + 12px)">
+            <img src="${p.c2}" alt="" class="card-img" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(wrap);
+});
+
+// ═══════════════════════════════════
+// FADE IN — IntersectionObserver
+// ═══════════════════════════════════
+const fadeEls = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const delay = parseInt(el.dataset.delay || 0);
+    setTimeout(() => el.classList.add('visible'), delay);
+    observer.unobserve(el);
+  });
+}, { threshold: 0, rootMargin: '50px' });
+fadeEls.forEach(el => observer.observe(el));
+
+// ═══════════════════════════════════
+// MAGNET — Hero portrait
+// ═══════════════════════════════════
+(function () {
+  const el = document.getElementById('hero-portrait');
+  const PADDING = 150, STRENGTH = 3;
+  let active = false;
+
+  document.addEventListener('mousemove', e => {
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const threshold = Math.max(rect.width, rect.height) / 2 + PADDING;
+    const desktop = window.innerWidth >= 640;
+
+    if (dist < threshold) {
+      active = true;
+      el.style.transition = 'transform 0.3s ease-out';
+      const ox = dx / STRENGTH, oy = dy / STRENGTH;
+      el.style.transform = desktop
+        ? `translateX(calc(-50% + ${ox}px)) translateY(${oy}px)`
+        : `translate(calc(-50% + ${ox}px), calc(-50% + ${oy}px))`;
+    } else if (active) {
+      active = false;
+      el.style.transition = 'transform 0.6s ease-in-out';
+      el.style.transform = desktop ? 'translateX(-50%)' : 'translate(-50%, -50%)';
+    }
+  });
+})();
+
+// ═══════════════════════════════════
+// ANIMATED TEXT — char scroll reveal
+// ═══════════════════════════════════
+(function () {
+  const el = document.getElementById('about-text');
+  const text = el.dataset.text;
+  el.innerHTML = text.split('').map((c) => {
+    if (c === ' ') return ' ';
+    return `<span class="char">${c}</span>`;
+  }).join('');
+
+  const chars = el.querySelectorAll('.char');
+  const total = chars.length;
+
+  function update() {
+    const rect = el.getBoundingClientRect();
+    const wh = window.innerHeight;
+    const start = wh * 0.75;
+    const end = wh * 0.4;
+    const progress = Math.max(0, Math.min(1, (start - rect.top) / (start - end)));
+    const lit = Math.floor(progress * total);
+    chars.forEach((c, i) => c.classList.toggle('lit', i < lit));
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ═══════════════════════════════════
+// MARQUEE — scroll driven
+// ═══════════════════════════════════
+(function () {
+  const section = document.getElementById('marquee');
+  const row1 = document.getElementById('row1');
+  const row2 = document.getElementById('row2');
+
+  function update() {
+    const rect = section.getBoundingClientRect();
+    const sectionTop = window.scrollY + rect.top;
+    const offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+    row1.style.transform = `translateX(${offset - 200}px)`;
+    row2.style.transform = `translateX(${-(offset - 200)}px)`;
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ═══════════════════════════════════
+// CARD STACKING — scale on scroll
+// ═══════════════════════════════════
+(function () {
+  const total = PROJECTS.length;
+  const cards = PROJECTS.map((_, i) => document.getElementById('card-' + i));
+  const wraps = document.querySelectorAll('.card-sticky-wrap');
+
+  function update() {
+    wraps.forEach((wrap, i) => {
+      const card = cards[i];
+      const rect = wrap.getBoundingClientRect();
+      const wh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, -rect.top / wh));
+      const targetScale = 1 - (total - 1 - i) * 0.03;
+      const scale = 1 - (1 - targetScale) * progress;
+      card.style.transform = `scale(${scale})`;
+    });
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// ═══════════════════════════════════
+// WHATSAPP FLOAT — scroll animation
+// ═══════════════════════════════════
+(function () {
+  const btn = document.getElementById('wa-float');
+  let cooldown = false;
+  window.addEventListener('scroll', function () {
+    if (cooldown) return;
+    cooldown = true;
+    btn.classList.remove('wa-anim');
+    void btn.offsetWidth;
+    btn.classList.add('wa-anim');
+    btn.addEventListener('animationend', function () {
+      btn.classList.remove('wa-anim');
+      setTimeout(function () { cooldown = false; }, 300);
+    }, { once: true });
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
